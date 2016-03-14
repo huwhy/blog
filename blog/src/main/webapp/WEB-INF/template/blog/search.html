@@ -1,0 +1,54 @@
+<%layout("layout/header_layout.html"){%>
+<script>
+    $(function () {
+        $("ul.pic_box li").hover(function () {
+            $(this).children("a.bar").toggle(500);
+        }, function () {
+            $(this).children("a.bar").toggle(500);
+        });
+    });
+</script>
+<%}%>
+<%layout("layout/body_layout.html"){%>
+<div class="top_ad">
+    <div id="myCarousel" data-ride="carousel" data-interval="4000" class="sui-carousel" style="min-height: 300px;">
+        <%if(has(slides)){%>
+        <ol class="carousel-indicators">
+            <%for(var i = 0; i < slides.~size; i++){%>
+            <li data-target="#myCarousel" data-slide-to="${i}" class="${i==0? 'active' : ''}"></li>
+            <%}%>
+        </ol>
+        <div class="carousel-inner">
+            <%for(slide in slides){%>
+            <div class="${slideLP.first?'active':''} item" style="height: 300px;">
+                <img src="/file${slide.picture}">
+
+                <div class="carousel-caption">
+                    <h4><a href="${slide.url!}" target="_blank">${slide.title!}</a></h4>
+                    <p><a href="${slide.url!}" target="_blank">${slide.content!}</a></p>
+                </div>
+            </div>
+            <%}%>
+        </div>
+        <%}%>
+        <a href="#myCarousel" data-slide="prev" class="carousel-control left">‹</a>
+        <a href="#myCarousel" data-slide="next" class="carousel-control right">›</a>
+    </div>
+</div>
+<%for(item in data!){%>
+<%if((itemLP.index - 1) % 5 ==0){%>
+<div class="attr_box">
+    <ul class="pic_box">
+        <%}%>
+        <li>
+            <a class="bar" href="${item.~path}" target="_blank">${item.name}</a>
+            <a class="pic imgBox" href="${item.~path}" target="_blank" title="${item.name}">
+                <img src="/file${item.mainPicture}" class="">
+            </a>
+        </li>
+        <%if((itemLP.index % 5 == 0) && (itemLP.index > 1) ){%>
+    </ul>
+</div>
+<%}%>
+<%}%>
+<%}%>

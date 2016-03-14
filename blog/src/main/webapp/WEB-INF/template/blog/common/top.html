@@ -1,0 +1,81 @@
+<div class="top">
+    <div class="top_bar">
+        <ul class="top_menu">
+            <li>
+                <a class="first">login</a>
+            </li>
+            <li>
+                <a class="last">register</a>
+            </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="header">
+    <div class="clear"></div>
+    <div class="header_top">
+        <a class="logo"><#site_name/></a>
+        <div class="ser_n">
+            <form class="searchBox" action="/search.html" method="get">
+                <div class="search-table">
+                    <span class="cur">文章</span>
+                </div>
+                <span class="ipt1">
+                    <em class="i_search"></em>
+                    <input class="searchKey" name="searchKey" type="text" autocomplete="off" placeholder="搜索文章" value="${params.searchKey!}" />
+                </span>
+                <span class="ipt2">
+                    <input type="submit" class="fm_hd_btm_shbx_bttn" value="搜 索">
+                </span>
+            </form>
+            <div class="clear"></div>
+        </div>
+        <div class="hot_tags hide">
+            <span><a href="/search.html?searchKey=热闹">热闹</a></span>
+            <span>热闹</span>
+            <span>标签</span>
+            <span>标签</span>
+        </div>
+    </div>
+</div>
+<div class="nav_bar" style="position:relative; top: 1px; height: auto;">
+    <div class="wheader">
+        <div class="header_b">
+            <ul class="nav_new">
+                <li class="home">
+                    <a class="r_d" href="/">首页<span class="shining none_f"></span></a>
+                </li>
+                <%for(cat in session.catList!){%>
+                    <%if(isEmpty(cat.children)){%>
+                        <li>
+                            <a class="" href="${cat.path!}">${cat.name!}</a>
+                        </li>
+                    <%}else {%>
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle">${cat.name!}<i class="caret"></i></a>
+                            <ul class="dropdown-menu">
+                                <%for(cat2 in cat.children!){%>
+                                    <%if(isEmpty(cat2.children)){%>
+                                        <li><a href="${cat2.path!}">${cat2.name!}</a></li>
+                                    <%}else{%>
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle">${cat2.name!}<i class="caret-right"></i></a>
+                                            <ul class="dropdown-menu" style="margin-left: 99%; margin-top: -26px;">
+                                                <%for(cat3 in cat2.children!){%>
+                                                    <li><a href="${cat.path!}">${cat3.name!}</a></li>
+                                                <%}%>
+                                            </ul>
+                                        </li>
+                                    <%}%>
+                                <%}%>
+                            </ul>
+                        </li>
+                    <%}%>
+                <%}%>
+                <li class="">
+                    <a href="/hao123.html" target="_blank">hao123<span class="shining none_f"></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

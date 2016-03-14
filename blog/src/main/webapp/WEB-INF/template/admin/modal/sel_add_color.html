@@ -1,0 +1,37 @@
+<div id="J_add_color" tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+                <h4 class="modal-title">添加颜色</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-msg" class="sui-form form-horizontal" novalidate="novalidate">
+                    <div class="control-group">
+                        <label for="inputColor" class="control-label">颜色名：</label>
+                        <div class="controls">
+                            <input type="text" id="inputColor" name="color" class="h28" placeholder="颜色名" data-rules="required|minlength=1|maxlength=6" data-error-msg="颜色名必须是1-20位" data-empty-msg="亲，请写颜色名">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <div class="controls">
+                            <button type="button" class="sui-btn btn-primary btn-add">添加</button>
+                        </div>
+                        <div class="sui-msg msg-naked msg-error total-msg-error hide">
+                            <div class="msg-con">错误信息提示</div>
+                            <s class="msg-icon"></s>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    $("#form-msg").validate({
+                        messages: {
+                            color: ["亲，请写颜色名", "颜色名必须是1-20位"]
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

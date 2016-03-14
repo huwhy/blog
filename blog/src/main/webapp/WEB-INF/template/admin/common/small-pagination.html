@@ -1,0 +1,14 @@
+<div class="sui-pagination pagination-small">
+    <ul>
+        <li class="prev ${page.curNo==1?'disabled': ''}"><a>«</a></li>
+        <%for(var p = 1; p <= page.totalPage; p++){%>
+            <li class="${p==page.curNo}?'active':''"><a>${p}</a></li>
+        <%}%>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+        <li class="next"><a href="#">»</a></li>
+    </ul>
+</div>

@@ -1,0 +1,109 @@
+.msg{
+    position: absolute;
+    top: 10%;
+    z-index: 1060;
+    display: none;
+    padding: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: left;
+    white-space: normal;
+}
+.msg .msg-title {
+    max-width: 276px;
+    min-width: 276px;
+    padding: 0px 14px;
+    margin: 0;
+    font-size: 14px;
+    background-color: #f7f7f7;
+    border-radius: 6px 6px 0 0;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+.msg .msg-content {
+    max-width: 276px;
+    min-width: 276px;
+    padding: 9px 14px;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+.msg button.close{
+    position: relative;
+    top: -28px;
+    right: 8px;
+}
+
+.msg-success {
+    color: #3c763d;
+}
+.msg-success .msg-title{
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.msg-success .msg-content {
+    border-color: #d6e9c6;
+}
+
+
+
+.msg-info {
+    color: #31708f;
+}
+.msg-info .msg-title{
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+.msg-info .msg-content {
+    border-color: #bce8f1;
+}
+
+.msg-warning {
+    color: #8a6d3b;
+}
+.msg-warning .msg-title{
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+.msg-warning .msg-content {
+    border-color: #faebcc;
+}
+
+.msg-danger {
+    color: #a94442;
+}
+.msg-danger .msg-title{
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.msg-danger .msg-content {
+    border-color: #ebccd1;
+}
+button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+    filter: alpha(opacity=20);
+}

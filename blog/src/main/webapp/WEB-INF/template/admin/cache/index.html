@@ -1,0 +1,44 @@
+<html>
+<head>
+    <title>缓存数据管理</title>
+    <meta name="description" content="display">
+    <meta name="keywords" content="display">
+    <%layout("../layout/header_layout.html"){%>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".btn-cat").click(function () {
+                Common.post("${basePath}/cache/clearWebCats", {}, function (json) {
+                    alert(json.msg);
+                });
+            });
+            $(".btn-menu").click(function () {
+                Common.post("${basePath}/cache/clearMenus", {}, function (json) {
+                    alert(json.msg);
+                });
+            });
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal sui-validate save-form">
+        <div class="control-group">
+            <label class="control-label">类目缓存：</label>
+            <div class="controls">
+                <input type="button" class="sui-btn btn-primary btn-cat" value="更新缓存">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">管理菜单缓存：</label>
+            <div class="controls">
+                <input type="button" class="sui-btn btn-primary btn-menu" value="更新缓存">
+            </div>
+        </div>
+    </form>
+</div>
+<%}%>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<html>
+<head>
+    <%var st = "设置Seo"; var sd="设置Seo"; var sk="设置Seo";
+    include("../common/seo.html", {title:st,description:sd,keywords:sk}){};%>
+    <%layout("../layout/header_layout.html"){%>
+    <script type="text/javascript">
+        $(function () {
+            $(".btn-save").click(function () {
+                Common.post("${basePath}/seo/save", $("form.save-form").serializeArray(), function (json) {
+                    if (json.code == Common.SUCC) {
+                        Common.go("${basePath}/seo/list")
+                    } else {
+                        $(".total-msg-error .msg-con").text(json.msg);
+                        $(".total-msg-error").removeClass("hide");
+                        $(".total-msg-error").addClass("show");
+                    }
+                });
+            });
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal sui-validate save-form" method="POST" action="${basePath}/param/save">
+        <div class="control-group">
+            <label class="control-label">SeoKey：</label>
+
+            <div class="controls">
+                <input type="hidden" name="seoKey" value="${params.seoKey!}">
+                ${params.seoKey!}
+            </div>
+            <label class="control-label">ID：</label>
+
+            <div class="controls">
+                <input type="hidden" name="targetId" value="${params.targetId!}">
+                ${params.targetId!} &nbsp;&nbsp;${params.title!}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">title：</label>
+
+            <div class="controls">
+                <textarea name="title"  rows="5" cols="55">${seo.title!}</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">description：</label>
+
+            <div class="controls">
+                <textarea name="description"  rows="5" cols="55">${seo.description!}</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">keywords：</label>
+
+            <div class="controls">
+                <textarea name="keywords"  rows="5" cols="55">${seo.keywords!}</textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+
+            <div class="controls">
+                <button type="button" class="sui-btn btn-primary btn-save">保存</button>
+            </div>
+            <div class="sui-msg msg-naked msg-error total-msg-error hide">
+                <div class="msg-con">错误信息提示</div>
+                <s class="msg-icon"></s>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">&nbsp;</label>
+            <div class="sui-msg msg-question">
+                <div class="msg-con"><strong>提示:</strong><br>
+                    1、类目Seo可以输入的变量: <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;父类目的名称-{parentName}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;本类目的名称-{name}<br>
+                    <br>
+                    2、商品Seo可以输入的变量:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;一级类目的名称-{firstName}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;二级类目的名称-{secondName}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;三级类目的名称-{thirdName}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;商品名称-{name}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;商品简单-{summary}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;商品Tags-{tags}<br>
+                    3、所有Seo可以输入的变量:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;网站名-{site_name}<br>
+                </div>
+                <s class="msg-icon"></s>
+            </div>
+        </div>
+    </form>
+</div>
+<%}%>
+</body>
+</html>

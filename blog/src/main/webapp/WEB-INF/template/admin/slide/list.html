@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>首页广告图管理</title>
+    <meta name="description" content="display">
+    <meta name="keywords" content="display">
+    <%layout("../layout/header_layout.html"){%>
+    <script type="text/javascript">
+        $(function () {
+            Pagination.init();
+            SlideList.init();
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal query-form">
+        <input type="hidden" name="perSize" value="${page.perSize!10}">
+
+        <div class="sui-row">
+            <div class="span2">
+                <div class="input-prepend"><span class="add-on">标题</span>
+                    <input id="prependedInput" type="text" name="title" value="${params.title!}" placeholder="标题"
+                           class="input-fat h28">
+                </div>
+            </div>
+            <div class="span2">
+                <div class="input-prepend input-append">
+                    <span class="add-on">是否显示</span>
+                </div>
+                <span class="input-fat select">
+                <label data-toggle="radio" class="radio-pretty inline ${params.status=='display'?'checked':''}">
+                    <input type="radio" ${params.status=='display'?'checked':''} name="status" value="display"><span>是</span>
+                </label>
+                <label data-toggle="radio" class="radio-pretty inline ${params.status=='hide'?'checked':''}">
+                    <input type="radio" name="status" ${params.status=='hide'?'checked':''}
+                           value="hide"><span>否</span>
+                </label>
+                    </span>
+            </div>
+        </div>
+        <div class="sui-row" style="margin-top: 10px;">
+            <div class="span2">
+                <button class="sui-btn btn-query">查询</button>
+            </div>
+            <div class="span2">
+                <a class="sui-btn" href="${basePath}/slide/add">添加广告图</a>
+            </div>
+        </div>
+    </form>
+</div>
+<table class="sui-table table-bordered">
+    <thead>
+    <tr>
+        <th>＃</th>
+        <th>标题</th>
+        <th>链接</th>
+        <th>简介</th>
+        <th>状态</th>
+        <th>图片</th>
+        <th>创建时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%for(slide in data!){%>
+    <tr>
+        <td>${slide.id}</td>
+        <td>${slide.title!}</td>
+        <td>${slide.url!}</td>
+        <td>${slide.content!''}</td>
+        <td>${slide.~statusVal!''}</td>
+        <td>
+            <a href="#" data-placement="right" data-toggle="tooltip"
+               title="<img src='/file?file=${slide.picture!}'>">图片</a>
+        </td>
+
+        <td>
+            <a href="${basePath}/slide/edit?id=${slide.id}" class="sui-btn btn-small btn-link">编辑</a>
+            <%if(slide.show){%>
+            <a href="javascript:void(0);" id="${slide.id}" class="sui-btn btn-small btn-link btn-hide">隐藏</a>
+            <%}else{%>
+            <a href="javascript:void(0);" id="${slide.id}" class="sui-btn btn-small btn-link btn-show">显示</a>
+            <%}%>
+        </td>
+    </tr>
+    <%}%>
+    </tbody>
+</table>
+<#small_page val="${page}" size="large" params="${params}"/>
+<%}%>
+</body>
+</html>

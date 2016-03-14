@@ -1,0 +1,105 @@
+<html>
+<head>
+    <title>Seo设置</title>
+    <meta name="description" content="Seo设置">
+    <meta name="keywords" content="Seo设置">
+    <%layout("../layout/header_layout.html"){%>
+    <script type="text/javascript">
+        $(function(){
+            Pagination.init();
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal query-form">
+        <input type="hidden" name="perSize" value="${page.perSize!10}">
+        <div class="sui-row">
+            <div class="span2">
+                <div class="input-prepend">
+                    <span class="add-on">ID:</span>
+                    <input type="text" name="targetId" value="${params.targetId!}" placeholder="ID" class="input-fat h28">
+                </div>
+            </div>
+            <div class="span2">
+                <div class="input-prepend">
+                    <span class="add-on">类型:</span>
+                    <span class="sui-dropdown dropdown-bordered dropdown-large select">
+                    <span class="dropdown-inner">
+                    <a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+                        <input value="${params.seoKey}" name="seoKey" type="hidden"><i class="caret"></i>
+                        <span>
+                            <%if(params.seoKey=="Home") {%>首页
+                            <%} else if(params.seoKey=="Cat") {%>类目页
+                            <%} else if(params.seoKey=="Item") {%>商品页
+                            <%} else {%>
+                                请选择
+                            <%}%>
+
+                        </span>
+                    </a>
+                    <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+                        <li role="presentation" ${params.seoKey=="Unknown"?'class=\"active\"':''}>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="Unknown">请选择</a>
+                        </li>
+                        <li role="presentation" ${params.seoKey=="Home"?'class=\"active\"':''}>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="Home">首页</a>
+                        </li>
+                        <li role="presentation" ${params.seoKey=="Cat"?'class=\"active\"':''}>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="Cat">类目页</a>
+                        </li>
+                        <li role="presentation" ${params.seoKey=="Item"?'class=\"active\"':''}>
+                            <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="Item">商品页</a>
+                        </li>
+                    </ul>
+                    </span>
+                </span>
+                </div>
+            </div>
+        </div>
+        <div class="sui-row" style="margin-top: 10px;">
+            <div class="span2">
+                <button class="sui-btn btn-query">查询</button>
+            </div>
+            <div class="span4">
+                <a class="sui-btn btn-query" href="${basePath}/seo/add?seoKey=Home&targetId=0">设置首页Seo</a>
+                <a class="sui-btn btn-query" href="${basePath}/seo/add?seoKey=Cat&targetId=0">设置类目Seo</a>
+                <a class="sui-btn btn-query" href="${basePath}/seo/add?seoKey=Item&targetId=0">设置商品Seo</a>
+            </div>
+        </div>
+    </form>
+</div>
+<table class="sui-table table-bordered">
+    <thead>
+    <tr>
+        <th>＃</th>
+        <th>Seo类型</th>
+        <th>ID</th>
+        <th>title</th>
+        <th>更新时间</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%for(it in data!){%>
+    <tr>
+        <td>${it.id}</td>
+        <td>${it.seoKey.value}</td>
+        <td>${it.targetId!}</td>
+        <td>${it.title!}</td>
+        <td>${it.updated, 'yyyy-MM-dd HH:mm:ss'}</td>
+        <td>${it.created, 'yyyy-MM-dd HH:mm:ss'}</td>
+        <td>
+            <a href="${basePath}/seo/add?seoKey=${it.seoKey}&targetId=0" class="sui-btn btn-small btn-link">编辑</a>
+        </td>
+    </tr>
+    <%}%>
+    </tbody>
+</table>
+<#small_page val="${page}" size="large" params="${params}"/>
+<%}%>
+</body>
+</html>

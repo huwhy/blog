@@ -1,0 +1,19 @@
+<body class="blog">
+<%include("../common/top.html"){}%>
+<div class="crumb">
+    <ul class="sui-breadcrumb">
+        <%for(crumb in crumbs!){%>
+            <%if(!isEmpty(crumb.url)){%>
+            <li><a href="${crumb.url}">${crumb.name!}</a></li>
+            <%}else{%>
+            <li class="active">${crumb.name!}</li>
+            <%}%>
+        <%}%>
+    </ul>
+</div>
+<div class="container">
+${layoutContent}
+</div>
+<%include("../common/footer.html"){}%>
+</body>
+</html>

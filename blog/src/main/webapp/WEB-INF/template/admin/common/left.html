@@ -1,0 +1,8 @@
+<div class="sidebar">
+    <ul class="sui-nav nav-list">
+        <!--<li class="nav-header">产品管理</li>-->
+        <%for(menu in session.left_menus!){%>
+            <li class="${(session.second_menu_id == menu.id)?'active':''}"><a href="${basePath}${menu.path!}?secondMenuId=${menu.id}">${menu.name!}</a></li>
+        <%}%>
+    </ul>
+</div>

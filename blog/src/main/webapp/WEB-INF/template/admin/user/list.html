@@ -1,0 +1,197 @@
+<html>
+<head>
+    <title>管理员列表</title>
+    <meta name="description" content="display">
+    <meta name="keywords" content="display">
+    <%layout("../layout/header_layout.html"){%>
+    <script type="text/javascript">
+        $(function () {
+            $('#demo4.input-daterange').datepicker({
+                beforeShowDay: function (date) {
+                    if (date.getMonth() == (new Date()).getMonth())
+                        switch (date.getDate()) {
+                            case 4:
+                                return {
+                                    tooltip: 'Example tooltip',
+                                    classes: 'active'
+                                };
+                            case 8:
+                                return false;
+                            case 12:
+                                return "green";
+                        }
+                }
+            });
+            Pagination.init();
+            SlideList.init();
+            $('.btn-unlock').unbind("click").bind("click", function() {
+                var thisObj = $(this);
+                Common.post("${basePath}/user/unlock", {id:$(this).attr("uid")}, function(json) {
+                    if (json.code == Common.SUCC) {
+                        Common.refresh();
+                    } else {
+                        $(thisObj).tooltip({
+                            animation: true,
+                            title: json.msg
+                        });
+                    }
+                });
+            });
+            $('.btn-lock').unbind("click").bind("click", function() {
+                var thisObj = $(this);
+                Common.post("${basePath}/user/lock", {id:$(this).attr("uid")}, function(json) {
+                    if (json.code == Common.SUCC) {
+                        Common.refresh();
+                    } else {
+                        $(thisObj).tooltip({
+                            animation: true,
+                            title: json.msg
+                        });
+                    }
+                });
+            });
+            $('.btn-realName').tooltip({
+                animation: false,
+                trigger: 'click',
+                type: 'confirm',
+                okHide: function(){
+                    var thisObj = $(this);
+                    Common.post("${basePath}/user/resetRealName", {id:$(this).attr("uid"), realName:$("#newRealName").val()}, function(json) {
+                        if (json.code == Common.SUCC) {
+                            Common.refresh();
+                        } else {
+                            alert(json.msg);
+                        }
+                    });
+                },
+                hide: function(){console.log(thisObj)}
+            });
+            $('.btn-password').tooltip({
+                animation: false,
+                trigger: 'click',
+                type: 'confirm',
+                okHide: function(){
+                    var thisObj = $(this);
+                    Common.post("${basePath}/user/resetPassword", {id:$(this).attr("uid"), password:$("#newPassword").val()}, function(json) {
+                        if (json.code == Common.SUCC) {
+                            Common.refresh();
+                        } else {
+                            alert(json.msg);
+                        }
+                    });
+                },
+                hide: function(){console.log(thisObj)}
+            });
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal query-form">
+        <input type="hidden" name="perSize" value="${page.perSize!10}">
+        <div class="sui-row">
+            <div class="span2">
+                <div class="input-prepend"><span class="add-on">管理员:</span>
+                    <input id="prependedInput" type="text" name="username" value="${params.username!}" placeholder="username"
+                           class="input-fat h28">
+                </div>
+            </div>
+            <div class="span4 w285">
+                <div class="control-group input-daterange">
+                    <div class="input-prepend">
+                        <span class="add-on w50 right">更新时间:</span>
+                        <input type="text" name="updatedStart" value="${params.updatedStart!}" placeholder="起"
+                               class="input-date input-fat h28 w100"><span
+                            class="add-on" style="  margin-left: -1px;"> - </span>
+                        <input type="text" name="updatedEnd" value="${params.updatedEnd!}" placeholder="止"
+                               class="input-date input-fat h28 w100">
+                    </div>
+                </div>
+            </div>
+            <div class="span2">
+                <div class="input-prepend input-append">
+                    <span class="add-on">是否锁定:</span>
+                </div>
+                <span class="input-fat select">
+                <label data-toggle="radio" class="radio-pretty inline ${params.locked=='true'?'checked':''}">
+                    <input type="radio" ${params.status=='true'?'checked':''} name="status" value="true"><span>是</span>
+                </label>
+                <label data-toggle="radio" class="radio-pretty inline ${params.parent=='false'?'checked':''}">
+                    <input type="radio" name="status" ${params.status=='false'?'checked':''}
+                           value="false"><span>否</span>
+                </label>
+                    </span>
+            </div>
+        </div>
+        <div class="sui-row" style="margin-top: 10px;">
+            <div class="span2">
+                <div class="input-prepend"><span class="add-on">姓&nbsp;&nbsp;&nbsp;名:</span>
+                    <input id="realName" type="text" name="realName" value="${params.realName!}" placeholder="username"
+                           class="input-fat h28">
+                </div>
+            </div>
+            <div class="span4 w285">
+                <div class="control-group input-daterange">
+                    <div class="input-prepend">
+                        <span class="add-on w50 right">创建时间:</span>
+                        <input type="text" name="createdStart" value="${params.createdStart!}" placeholder="起"
+                               class="input-date input-fat h28 w100"><span
+                            class="add-on" style="  margin-left: -1px;"> - </span>
+                        <input type="text" name="createdEnd" value="${params.createdEnd!}" placeholder="止"
+                               class="input-date input-fat h28 w100">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sui-row" style="margin-top: 10px;">
+            <div class="span2">
+                <button class="sui-btn btn-query">查询</button>
+            </div>
+            <div class="span2">
+                <a class="sui-btn" href="${basePath}/user/add">添加管理员帐号</a>
+            </div>
+        </div>
+    </form>
+</div>
+<table class="sui-table table-bordered">
+    <thead>
+    <tr>
+        <th>＃</th>
+        <th>帐号</th>
+        <th>姓名</th>
+        <th>状态</th>
+        <th>更新时间</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%for(user in data!){%>
+    <tr>
+        <td>${user.id}</td>
+        <td>${user.username!}</td>
+        <td>${user.realName!''}</td>
+        <td>${user.locked?'锁定':'未锁定'}</td>
+        <td>${user.updated, 'yyyy-MM-dd HH:mm:ss'}</td>
+        <td>${user.created, 'yyyy-MM-dd HH:mm:ss'}</td>
+        <td>
+            <%if(user.locked){%>
+            <a href="javascript:void(0);" uid="${user.id}" class="sui-btn btn-small btn-link btn-unlock">解锁</a>
+            <%}else{%>
+            <a href="javascript:void(0);" uid="${user.id}" class="sui-btn btn-small btn-link btn-lock">锁定</a>
+            <%}%>
+            <a href="javascript:void(0);" uid="${user.id}" class="sui-btn btn-small btn-link btn-realName"
+               data-trigger="click" data-original-title="姓名:<input id=&quot;newRealName&quot; type=&quot;text&quot; name=&quot;realName&quot;>">修改姓名</a>
+            <a href="javascript:void(0);" uid="${user.id}" class="sui-btn btn-small btn-link btn-password"
+               data-trigger="click" data-original-title="密码:<input id=&quot;newPassword&quot; type=&quot;password&quot; name=&quot;password&quot;>">重置密码</a>
+        </td>
+    </tr>
+    <%}%>
+    </tbody>
+</table>
+<#small_page val="${page}" size="large" params="${params}"/>
+<%}%>
+</body>
+</html>

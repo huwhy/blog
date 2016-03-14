@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>添加商品类目</title>
+    <meta name="description" content="display">
+    <meta name="keywords" content="display">
+    <%layout("../layout/header_layout.html"){%>
+    <script type="text/javascript">
+        $(function () {
+            $(".btn-save").click(function () {
+                Common.post("${basePath}/cat/save", $("form.save-form").serializeArray(), function (json) {
+                    if (json.code == Common.SUCC) {
+                        Common.go("${basePath}/cat/list")
+                    } else {
+                        $(".total-msg-error .msg-con").text(json.msg);
+                        $(".total-msg-error").removeClass("hide");
+                        $(".total-msg-error").addClass("show");
+                    }
+                });
+            });
+            CatSel.init("/katyusha/admin/cat/sel/query", "form.save-form", "pid", "pName");
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal sui-validate save-form" method="POST" action="${basePath}/cat/save">
+        <div class="control-group">
+            <label for="inputName" class="control-label">类目名：</label>
+
+            <div class="controls">
+                <input type="text" id="inputName" class="h24" name="name" placeholder="name"
+                       data-rules="required|minlength=2|maxlength=10">
+            </div>
+            <label for="inputEmail" class="control-label">父类目：</label>
+            <div class="controls">
+                <input type="hidden" name="pid"/>
+                <input type="text" id="inputEmail" class="h24" name="pName" placeholder="父类目">
+                <a class="sui-btn h24" data-toggle="modal" data-remote="${basePath}/cat/sel?parent=true" data-width="large" data-target="#J_sel_cat" class="sui-btn btn-primary">..</a>
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="inputChild" class="control-label">是否父类目：</label>
+
+            <div class="controls">
+                <label data-toggle="radio" class="radio-pretty inline">
+                    <input id="inputChild" type="radio" name="parent" value="true" data-rules=""><span>是</span>
+                </label>
+                <label data-toggle="radio" class="radio-pretty inline">
+                    <input id="inputChild2" type="radio" name="parent" value="false"
+                           data-rules="required"><span>否</span>
+                </label>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+
+            <div class="controls">
+                <button type="button" class="sui-btn btn-primary btn-save">保存</button>
+            </div>
+            <div class="sui-msg msg-naked msg-error total-msg-error hide">
+                <div class="msg-con">错误信息提示</div>
+                <s class="msg-icon"></s>
+            </div>
+        </div>
+    </form>
+</div>
+<%include("../modal/sel_cat.html"){}%>
+<%}%>
+</body>
+</html>

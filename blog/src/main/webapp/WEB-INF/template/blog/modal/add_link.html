@@ -1,0 +1,43 @@
+<div id="J_add_link" tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+                <h4 class="modal-title">添加尺码</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-msg" class="sui-form form-horizontal" novalidate="novalidate">
+                    <div class="control-group">
+                        <label for="inputName" class="control-label">名称：</label>
+                        <div class="controls">
+                            <input type="text" id="inputName" name="name" class="h28" placeholder="名称" data-rules="required|minlength=1|maxlength=30">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="inputLink" class="control-label">链接：</label>
+                        <div class="controls">
+                            <input type="text" id="inputLink" name="link" class="h28" placeholder="链接地址" data-rules="required|minlength=1|maxlength=255">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <div class="controls">
+                            <button type="button" class="sui-btn btn-primary btn-add">添加</button>
+                        </div>
+                        <div class="sui-msg msg-naked msg-error total-msg-error hide">
+                            <div class="msg-con">错误信息提示</div>
+                            <s class="msg-icon"></s>
+                        </div>
+                    </div>
+                </form>
+                <script>
+                    $("#form-msg").validate({
+                        messages: {
+                            name: ["亲，请写名称", "名称必须是1-30位"]
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

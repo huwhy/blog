@@ -1,0 +1,65 @@
+<%layout("layout/header_layout.html"){%>
+<script>
+    $(function () {
+        $("ul.pic_box li").hover(function () {
+            $(this).children("a.bar").toggle(500);
+        }, function () {
+            $(this).children("a.bar").toggle(500);
+        });
+    });
+</script>
+<%}%>
+<%layout("layout/body_layout.html"){%>
+<div class="container-center">
+    <div class="container-left">
+        <div class="shadow-box article-wrap">
+            <h1 class="t-h1">${article.title!}</h1>
+            <div class="clearfix article-other">
+                <span class="pull-left author">
+                    <a class="author-name2 hx-card" href="/" target="_blank">huwhy</a>
+                </span>
+                <time class="pull-left time">${article.created, 'yyyy年MM月dd日 HH时mm分'}</time>
+                <ul class="pull-left list-inline tag-box">
+                    <%for(tag in article.tagList!){%>
+                    <li>
+                        <a href="/search.html?searchKey=${tag}" target="_blank">${tag}</a>
+                    </li>
+                    <%}%>
+                </ul>
+                <span class="pull-right action-box">
+                    <a class="cmt" href="#odby" title="评论数"><i class="i-icon icon-cmt"></i>评论(<em>${article.comments!0}</em>)</a>
+                    <a class="cmt" href="#odby" title="浏览数"><i class="i-icon my-icon-eye-open"></i>浏览(<em>${article.views!0}</em>)</a>
+                </span>
+            </div>
+
+            <div class="art-ctt-iframe">
+                <div id="article_content" class="article-content-wrap" style="overflow: hidden;">
+                    ${article.content!}
+                </div>
+            </div>
+            <div class="clearfix article-btm-other">
+                <div class="pull-right article-type">
+                <span class="pull-left like-wrap" aid="111369">
+                    <span class="bdr-box tool-tip like" title="喜欢"><i class="i-icon2 icon-like"></i></span>
+                    <em>0</em>
+                </span>
+                <span class="pull-left no-like-wrap" aid="111369">
+                    <span class="bdr-box tool-tip no-like" title="没劲"><i class="i-icon2 icon-no-like"></i></span>
+                    <em>0</em>
+                </span>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix shadow-box mod-info-flow">
+            <div class="clearfix mod-b mod-jinju">
+                <script type="text/javascript">
+                    /*首页banner*/
+                    var cpro_id = "u2081284";
+                </script>
+                <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+            </div>
+        </div>
+    </div>
+    <%include("common/right.html"){}%>
+</div>
+<%}%>

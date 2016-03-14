@@ -1,0 +1,208 @@
+<html>
+<head>
+    <title>商品管理</title>
+    <meta name="description" content="display">
+    <meta name="keywords" content="display">
+    <%layout("../layout/header_layout.html"){%>
+    <script type="text/javascript">
+        $(function () {
+            $('div.input-daterange').datepicker({
+                beforeShowDay: function (date) {
+                    if (date.getMonth() == (new Date()).getMonth())
+                        switch (date.getDate()) {
+                            case 4:
+                                return {
+                                    tooltip: 'Example tooltip',
+                                    classes: 'active'
+                                };
+                            case 8:
+                                return false;
+                            case 12:
+                                return "green";
+                        }
+                }
+            });
+            CatSel.init("/katyusha/admin/cat/sel/query", "form.query-form", "cid", "cName");
+            Pagination.init("form.query-form");
+            $("a.btn-sync").unbind("click").bind("click", function(){
+                Common.post("/katyusha/admin/item/sync",{id:$(this).attr("id")}, function(json) {
+                    alert(json.msg);
+                });
+            });
+            $("a.btn-un-sync").unbind("click").bind("click", function(){
+                Common.post("/katyusha/admin/item/unSync",{id:$(this).attr("id")}, function(json) {
+                    alert(json.msg);
+                });
+            });
+            ItemList.init();
+
+            $(".btn-sync-all").unbind("click").bind("click", function() {
+                Common.post("/katyusha/admin/item/syncAll",{}, function(json) {
+                    alert(json.msg);
+                });
+            });
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal query-form">
+        <div class="sui-row">
+            <div class="span2">
+                <div class="input-prepend">
+                    <span class="add-on w50 right">商品名:</span>
+                    <input id="prependedInput" type="text" name="name" value="${params.name!}" placeholder="商品名"
+                           class="input-fat h28">
+                </div>
+            </div>
+            <div class="span4 w285">
+                <div class="control-group input-daterange">
+                    <div class="input-prepend">
+                        <span class="add-on w50 right">更新时间:</span>
+                        <input type="text" name="updatedStart" value="${params.updatedStart!}" placeholder="起"
+                               class="input-date input-fat h28 w100"><span
+                            class="add-on" style="  margin-left: -1px;"> - </span>
+                        <input type="text" name="updatedEnd" value="${params.updatedEnd!}" placeholder="止"
+                               class="input-date input-fat h28 w100">
+                    </div>
+                </div>
+            </div>
+            <div class="span2  ">
+                <div class="input-prepend">
+                    <span class="add-on">类目:</span>
+                    <input id="cid" type="hidden" name="cid" value="${params.cid!}">
+                    <input id="cName" type="text" name="cName" value="${params.cName!}" placeholder="类目"
+                           class="input-fat h28" style="width: 124px !important;">
+                    <a class="sui-btn h28" data-toggle="modal" data-remote="${basePath}/cat/sel" data-width="large"
+                       data-target="#J_sel_cat" class="sui-btn btn-primary">..</a>
+                </div>
+            </div>
+            <div class="span2">
+                <div class="input-prepend input-append">
+                    <span class="add-on">状态:</span>
+                    <span class="sui-dropdown dropdown-bordered dropdown-large select">
+                        <span class="dropdown-inner">
+                        <a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown"
+                           class="dropdown-toggle">
+                            <input value="${params.status}" name="status" type="hidden"><i class="caret"></i>
+                            <span>
+                                <%if(params.status=="unknown"){%>
+                                    请选择
+                                <%} else if(params.status=="display") {%>显示
+                                <%} else if(params.status=="hide") {%>隐藏
+                                <%} else {%>
+                                    请选择
+                                <%}%>
+
+                            </span>
+                        </a>
+                        <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+                            <li role="presentation" ${params.status=="unknown"?'class=\"active\"':''}>
+                                <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="unknown">请选择</a>
+                            </li>
+                            <li role="presentation" ${params.status=="display"?'class=\"active\"':''}>
+                                <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="display">显示</a>
+                            </li>
+                            <li role="presentation" ${params.status=="hide"?'class=\"active\"':''}>
+                                <a role="menuitem" tabindex="-1" href="javascript:void(0);" value="hide">隐藏</a>
+                            </li>
+                        </ul>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div class="sui-row" style="margin-top: 10px">
+            <div class="span2">
+                <div class="input-prepend"><span class="add-on w50 right">标签:</span>
+                    <input id="tags" type="text" name="tag" value="${params.tag!}" placeholder="标签"
+                           class="input-fat h28">
+                </div>
+            </div>
+            <div class="span4 w285">
+                <div class="control-group input-daterange">
+                    <div class="input-prepend">
+                        <span class="add-on w50 right">创建时间:</span>
+                        <input type="text" name="createdStart" value="${params.createdStart!}" placeholder="起"
+                               class="input-date input-fat h28 w100"><span
+                            class="add-on" style="  margin-left: -1px;"> - </span>
+                        <input type="text" name="createdEnd" value="${params.createdEnd!}" placeholder="止"
+                               class="input-date input-fat h28 w100">
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="input-prepend input-append">
+                    <span class="add-on">价格:</span>
+                    <input name="priceStart" type="text" class="span2 input-fat h28 w50"
+                           value="${params.priceStart!}"><span
+                        class="add-on"> - </span>
+                    <input name="priceEnd" type="text" class="span2 input-fat h28 w50" value="${params.priceEnd!}"><span
+                        class="add-on">.00$</span>
+                </div>
+            </div>
+        </div>
+        <div class="sui-row" style="margin-top: 10px;">
+            <div class="span2">
+                <button class="sui-btn">查询</button>
+                <a class="sui-btn" href="${basePath}/item/add">添加产品</a>
+            </div>
+            <div class="span2">
+                <a class="sui-btn btn-sync-all">静态化所有商品</a>
+            </div>
+        </div>
+    </form>
+</div>
+<table class="sui-table table-bordered">
+    <thead>
+    <tr>
+        <th>＃</th>
+        <th>一级类目</th>
+        <th>二级类目</th>
+        <th>三级类目</th>
+        <th>名称</th>
+        <th>摘要</th>
+        <th>标签</th>
+        <th>价格</th>
+        <th>状态</th>
+        <th>更新时间</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%for(item in data!){%>
+    <tr>
+        <td>${item.id}</td>
+        <td>${item.firstName!}</td>
+        <td>${item.secondName!}</td>
+        <td>${item.thirdName!}</td>
+        <td>${item.name}</td>
+        <td>${item.summary}</td>
+        <td>${item.tags}</td>
+        <td>${currency(item.price, '$')}</td>
+        <td>${item.status}</td>
+        <td>${item.updated, "yyyy-MM-dd HH:mm:ss"}</td>
+        <td>${item.created, "yyyy-MM-dd HH:mm:ss"}</td>
+        <td>
+            <a href="${basePath}/item/edit?id=${item.id}" class="sui-btn btn-small btn-link">编辑</a>
+            <%if(item.show){%>
+            <a href="javascript:void(0);" id="${item.id}" class="sui-btn btn-small btn-link btn-hide">隐藏</a>
+            <%}else{%>
+            <a href="javascript:void(0);" id="${item.id}" class="sui-btn btn-small btn-link btn-show">显示</a>
+            <%}%>
+            <a href="javascript:void(0);" id="${item.id}" class="sui-btn btn-small btn-link btn-sync">静态化</a>
+            <a href="javascript:void(0);" id="${item.id}" class="sui-btn btn-small btn-link btn-un-sync">去静态化</a>
+        </td>
+    </tr>
+    <%}%>
+    </tbody>
+</table>
+<#small_page val="${page}" size="large"/>
+<%}%>
+<%include("../modal/sel_cat.html"){}%>
+</body>
+</html>

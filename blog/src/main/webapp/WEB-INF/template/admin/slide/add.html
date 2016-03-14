@@ -1,0 +1,218 @@
+<html>
+<head>
+    <title>添加首页广告图</title>
+    <meta name="description" content="display">
+    <meta name="keywords" content="display">
+    <%layout("../layout/header_layout.html"){%>
+    <link rel="stylesheet" type="text/css" href="/webuploader/webuploader.css">
+    <!--引入JS-->
+    <script type="text/javascript" src="/webuploader/webuploader.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var $list = $('#fileList'),
+            // 优化retina, 在retina下这个值是2
+                    ratio = window.devicePixelRatio || 1,
+
+            // 缩略图大小
+                    thumbnailWidth = 100 * ratio,
+                    thumbnailHeight = 100 * ratio,
+
+            // Web Uploader实例
+                    uploader;
+
+            // 初始化Web Uploader
+            uploader = WebUploader.create({
+
+                // 自动上传。
+                auto: true,
+
+                // swf文件路径
+                swf: '/webuploader/Uploader.swf',
+
+                // 文件接收服务端。
+                server: '/file/uploadSlidePic',
+
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#filePicker',
+                fileNumLimit: 1,
+                duplicate: false,
+
+                // 只允许选择文件，可选。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
+            });
+
+            uploader.on('beforeFileQueued', function () {
+                if (uploader.getStats().successNum > uploader.getStats().cancelNum) {
+                    alert("已设置图片，请先移除图片");
+                    return false;
+                }
+                return true;
+            });
+
+            // 当有文件添加进来的时候
+            uploader.on('fileQueued', function (file) {
+                var $li = $(
+                                '<div id=\"' + file.id + '\" class=\"file-item thumbnail\">' +
+                                '<img>' +
+                                '<div class=\"info\">' +
+                                '<label class=\"radio-pretty inline\">' +
+                                '</label></div>' +
+                                '</div>'
+                        ),
+                        $img = $li.find('img');
+
+                $list.append($li);
+
+                // 创建缩略图
+                uploader.makeThumb(file, function (error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+
+                    $img.attr('src', src);
+                }, thumbnailWidth, thumbnailHeight);
+            });
+
+            // 文件上传过程中创建进度条实时显示。
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                        $percent = $li.find('.progress span');
+
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<p class="progress"><span></span></p>')
+                            .appendTo($li)
+                            .find('span');
+                }
+
+                $percent.css('width', percentage * 100 + '%');
+            });
+
+            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+            uploader.on('uploadSuccess', function (file) {
+                $('#' + file.id).addClass('upload-state-done');
+                $('#' + file.id).append("<div class=\"file-panel\" style=\"height: 30px;\"><span class=\"cancel\">X</span></div>");
+                $('#' + file.id).append("<input type=\"hidden\" name=\"uploadFile\" value=\"" + file.name + "\" >");
+                $('#' + file.id).mouseover(function () {
+                    $(this).find(".file-panel").show();
+                });
+                $('#' + file.id).mouseout(function () {
+                    $(this).find(".file-panel").hide();
+                });
+                $('#' + file.id).find(".file-panel .cancel").unbind("click").bind("click", function () {
+                    $('#' + file.id).remove();
+                    uploader.removeFile(file, true);
+                    uploader.getStats().successNum = uploader.getStats().successNum - 1;
+                });
+
+            });
+
+            // 文件上传失败，现实上传出错。
+            uploader.on('uploadError', function (file) {
+                var $li = $('#' + file.id),
+                        $error = $li.find('div.error');
+
+                // 避免重复创建
+                if (!$error.length) {
+                    $error = $('<div class="error"></div>').appendTo($li);
+                    $('#' + file.id).append("<div class=\"file-panel\" style=\"height: 30px;\"><span class=\"cancel\">X</span></div>");
+                    $('#' + file.id).mouseover(function () {
+                        $(this).find(".file-panel").show();
+                    });
+                    $('#' + file.id).mouseout(function () {
+                        $(this).find(".file-panel").hide();
+                    });
+                    $('#' + file.id).find(".file-panel .cancel").unbind("click").bind("click", function () {
+                        $('#' + file.id).remove();
+                    });
+                }
+
+                $error.text('上传失败');
+            });
+
+            // 完成上传完了，成功或者失败，先删除进度条。
+            uploader.on('uploadComplete', function (file) {
+                $('#' + file.id).find('.progress').remove();
+            });
+            $(".btn-save").click(function () {
+                Common.post("${basePath}/slide/save", $("form.save-form").serializeArray(), function (json) {
+                    if (json.code == Common.SUCC) {
+                        Common.go("${basePath}/slide/list")
+                    } else {
+                        $(".total-msg-error .msg-con").text(json.msg);
+                        $(".total-msg-error").removeClass("hide");
+                        $(".total-msg-error").addClass("show");
+                    }
+                });
+            });
+        });
+    </script>
+    <%}%>
+</head>
+<body>
+<%layout("../layout/body_layout.html"){%>
+<div class="query-zone">
+    <form class="sui-form form-horizontal sui-validate save-form" enctype="multipart/form-data" method="POST"
+          action="${basePath}/slide/save">
+        <div class="control-group">
+            <label for="inputName" class="control-label"><b style="color: #f00;">*</b> 标题：</label>
+
+            <div class="controls">
+                <input type="text" id="inputName" class="h24 input-xxlarge" name="title" placeholder="标题"
+                       maxlength="60"
+                       data-rules="required|minlength=2|maxlength=60">
+            </div>
+        </div>
+        <div class="control-group">
+            <label for="idUrl" class="control-label"><b style="color: #f00;">*</b> 链接：</label>
+
+            <div class="controls">
+                <input type="text" id="idUrl" class="h24 input-xxlarge" name="url" placeholder="link"
+                       maxlength="255"
+                       data-rules="required|maxlength=255">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">简介：</label>
+
+            <div class="controls">
+                <textarea rows="3" class="input-block-level input-xxlarge" maxlength="100"
+                          name="summary" data-rules="minlength=2|maxlength=60"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">上传图片：</label>
+
+            <div class="controls">
+                <div class="uploader-div">
+                    <div id="fileList" class="uploader-list">
+                    </div>
+                    <div id="filePicker">选择图片</div>
+                </div>
+            </div>
+            <div class="sui-msg msg-naked show">
+                <div class="msg-con">找茬上传宽高为890px * 300px的图片</div>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+
+            <div class="controls">
+                <button type="button" class="sui-btn btn-primary btn-save">保存</button>
+            </div>
+            <div class="sui-msg msg-naked msg-error total-msg-error hide">
+                <div class="msg-con">错误信息提示</div>
+                <s class="msg-icon"></s>
+            </div>
+        </div>
+    </form>
+</div>
+<%}%>
+</body>
+</html>

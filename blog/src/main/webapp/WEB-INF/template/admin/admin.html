@@ -1,0 +1,125 @@
+<html>
+	<head>
+		<title>display</title>
+		<meta name="description" content="display">
+		<meta name="keywords" content="display">
+		<%layout("layout/header_layout.html"){%>
+		<script type="text/javascript">
+			$(function(){
+				$('#demo4.input-daterange').datepicker({
+				    beforeShowDay: function (date){
+				      if (date.getMonth() == (new Date()).getMonth())
+				        switch (date.getDate()){
+				          case 4:
+				            return {
+				              tooltip: 'Example tooltip',
+				              classes: 'active'
+				            };
+				          case 8:
+				            return false;
+				          case 12:
+				            return "green";
+				        }
+				    }
+				});
+			});
+		</script>
+		<%}%>
+	</head>
+	<body>
+		<%layout("layout/body_layout.html"){%>
+		<div class="query-zone">
+		  		<form class="sui-form form-horizontal">
+		  			<div class="sui-row">
+		  				<div class="span2">
+		  					<div class="input-prepend"><span class="add-on">商品名</span>
+						    <input id="prependedInput" type="text" placeholder="商品名" class="input-fat h28">
+						  </div>
+		  				</div>
+					    <div class="span1">
+					    	<label data-toggle="checkbox" class="checkbox-pretty inline checked">
+						    	<input type="checkbox" checked="checked" /><span>鸣人</span>
+						    </label>
+					    	<label data-toggle="checkbox" class="checkbox-pretty inline">
+						    	<input type="checkbox" ><span>鸣人</span>
+						    </label>
+					    </div>
+					    <div class="span1">
+					      <label data-toggle="radio" class="radio-pretty inline checked">
+					        <input type="radio" checked="checked" name="radio"><span>服装</span>
+					      </label>
+					      <label data-toggle="radio" class="radio-pretty inline">
+					        <input type="radio" name="radio"><span>服装</span>
+					      </label>
+					    </div>
+					    <div class="span1">
+							<span class="sui-dropdown dropdown-bordered select"><span class="dropdown-inner"><a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">
+							      <input value="hz" name="city" type="hidden"><i class="caret"></i><span>选择店铺类目</span></a>
+							    <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+							      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="bj">北京</a></li>
+							      <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb">圣彼得堡</a></li>
+							      <li role="presentation" class="divider"></li>
+							      <li role="presentation" class="active"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="hz">杭州</a></li>
+							    </ul></span></span>
+					    </div>
+					    <div class="span6">
+					    	<div id="demo4" class="control-group input-daterange">
+							    <label class="control-label">时间选择：</label>
+							    <div class="controls">
+							      <input type="text" class="input-medium input-date"><span>-</span>
+							      <input type="text" class="input-medium input-date">
+							    </div>
+							  </div>
+					    </div>
+				  	</div>
+				  	<div class="sui-row">
+				  		<div class="span2">
+				  			<button class="sui-btn">查询</button>
+				  		</div>
+				  	</div>
+				</form>
+			</div>
+			<table class="sui-table table-bordered">
+			  <thead>
+				<tr>
+				  <th>＃</th>
+				  <th>待付款</th>
+				  <th>宝宝数量</th>
+				  <th>交易金额</th>
+				  <th>操作</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <td>所有交易</td>
+				  <td>9999.00</td>
+				  <td>999</td>
+				  <td>99999.00</td>
+				  <td><a href="javascript:void(0);" class="sui-btn btn-small btn-link">链接</a></td>
+				</tr>
+				<tr>
+				  <td>待付款</td>
+				  <td>9999.00</td>
+				  <td>999</td>
+				  <td>99999.00</td>
+				  <td><a href="javascript:void(0);" class="sui-btn btn-small btn-link">链接</a></td>
+				</tr>
+				<tr>
+				  <td>已发货</td>
+				  <td>9999.00</td>
+				  <td>999</td>
+				  <td>99999.00</td>
+				  <td><a href="javascript:void(0);" class="sui-btn btn-small btn-link">链接</a></td>
+				</tr>
+				<tr>
+				  <td>已成功</td>
+				  <td>9999.00</td>
+				  <td>999</td>
+				  <td>99999.00</td>
+				  <td><a href="javascript:void(0);" class="sui-btn btn-small btn-link">链接</a></td>
+				</tr>
+			  </tbody>
+			</table>
+	<%}%>
+	</body>
+</html>

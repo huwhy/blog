@@ -1,0 +1,95 @@
+<div class="query-zone">
+    <form class="sui-form form-horizontal sel-form">
+        <input type="hidden" name="parent" value="${params.parent!}"/>
+        <input type="hidden" name="perSize" value="${params.perSize!}"/>
+
+        <div class="sui-row">
+            <div class="span2">
+                <div class="input-prepend"><span class="add-on">类目名</span>
+                    <input id="prependedInput" type="text" name="name" value="${params.name!}" placeholder="类目名"
+                           class="input-fat h28">
+                </div>
+            </div>
+            <div class="span1" style="width: 49px;">
+                <div class="input-prepend">
+                    <span class="add-on">类目级别</span>
+                </div>
+            </div>
+            <div class="span1">
+                <span class="sui-dropdown dropdown-bordered dropdown-large select">
+                    <span class="dropdown-inner">
+                    <a id="select" role="button" href="javascript:void(0);" data-toggle="dropdown"
+                       class="dropdown-toggle">
+                        <input value="${params.level}" name="level" type="hidden"><i class="caret"></i>
+                        <span>
+                            <%if(params.level=="0"){%>
+                                请选择
+                            <%} else if(params.level=="1") {%>一级
+                            <%} else if(params.level=="2") {%>二级
+                            <%} else {%>
+                                请选择
+                            <%}%>
+
+                        </span>
+                    </a>
+                    <ul role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
+                        <li role="presentation" ${params.level=="0"?'class=\"active\"':''}><a role="menuitem"
+                                                                                              tabindex="-1"
+                                                                                              href="javascript:void(0);"
+                                                                                              value="0">请选择</a></li>
+                        <li role="presentation" ${params.level=="1"?'class=\"active\"':''}><a role="menuitem"
+                                                                                              tabindex="-1"
+                                                                                              href="javascript:void(0);"
+                                                                                              value="1">一级</a></li>
+                        <li role="presentation" ${params.level=="2"?'class=\"active\"':''}><a role="menuitem"
+                                                                                              tabindex="-1"
+                                                                                              href="javascript:void(0);"
+                                                                                              value="2">二级</a></li>
+                    </ul>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="sui-row" style="margin-top: 10px;">
+            <div class="span2">
+                <a class="sui-btn btn-query">查询</a>
+                <a class="sui-btn btn-cancel">取消</a>
+                <a class="sui-btn btn-clear">清除</a>
+            </div>
+        </div>
+    </form>
+</div>
+<table class="sui-table table-bordered sel-table">
+    <thead>
+    <tr>
+        <th>＃</th>
+        <th>类目</th>
+        <th>父类目</th>
+        <th>是否父类目</th>
+        <th>类目级别</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%for(cat in data!){%>
+    <tr>
+        <td>
+            <input name="id" type="hidden" value="${cat.id}"/>
+            <input name="name" type="hidden" value="${cat.name}"/>
+            ${cat.id}
+        </td>
+        <td>${cat.name}</td>
+        <td>${cat.parentName!}</td>
+        <td>${cat.parent?'是':'否'}</td>
+        <td>
+            <%if(cat.level==1) {%>一级
+            <%} else if(cat.level==2) {%>二级
+            <%} else if(cat.level==3) {%>三级
+            <%}%>
+        </td>
+        <td><a href="javascript:void(0);" class="sui-btn btn-small btn-sel btn-link">选择</a></td>
+    </tr>
+    <%}%>
+    </tbody>
+</table>
+<#small_page val="${page}" size="large"/>

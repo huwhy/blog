@@ -1,0 +1,42 @@
+
+<%include("../common/seo.html"){};%>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="/static/css/blog/common.css">
+<link rel="stylesheet" type="text/css" href="http://g.alicdn.com/sj/dpl/1.4.3/css/sui-themes-dark-green.min.css" />
+<link rel="stylesheet" type="text/css" href="http://g.alicdn.com/sj/dpl/1.4.3/css/sui-append.min.css" />
+<script src="http://g.alicdn.com/sj/lib/jquery/dist/jquery.min.js"></script>
+<script src="http://g.alicdn.com/sj/dpl/1.4.3/js/sui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/msg.css">
+<script src="/static/js/common.js"></script>
+<script src="/static/js/msg.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $(".dropdown>.dropdown-toggle").hover(function(){
+            $(this).siblings(".dropdown-menu").show();
+        },function(){
+            $(this).siblings(".dropdown-menu").hide();
+        });
+        $(".dropdown>.dropdown-toggle").siblings(".dropdown-menu").hover(function(){
+            $(this).show();
+        },function(){
+            $(this).hide();
+        });
+        $(".dropdown .dropdown").hover(function(){
+            $(this).children(".dropdown-menu").show();
+        }, function(){
+            $(this).children(".dropdown-menu").hide();
+        });
+    });
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?e293505deaa5d3373180f382774e6f72";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>

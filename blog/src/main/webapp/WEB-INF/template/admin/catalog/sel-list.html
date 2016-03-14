@@ -1,0 +1,29 @@
+<table class="sui-table table-bordered sel-table">
+    <thead>
+    <tr>
+        <th>＃</th>
+        <th>类目</th>
+        <th>父类目</th>
+        <th>是否父类目</th>
+        <th>类目级别</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%for(cat in data!){%>
+    <tr>
+        <td>
+            <input name="id" type="hidden" value="${cat.id}" />
+            <input name="name" type="hidden" value="${cat.name}" />
+            ${cat.id}
+        </td>
+        <td>${cat.name}</td>
+        <td>${cat.parentName!}</td>
+        <td>${cat.parent?'是':'否'}</td>
+        <td>${cat.level}</td>
+        <td><a href="javascript:void(0);" class="sui-btn btn-small btn-sel btn-link">选择</a></td>
+    </tr>
+    <%}%>
+    </tbody>
+</table>
+<#small_page val="${page}" size="large"/>

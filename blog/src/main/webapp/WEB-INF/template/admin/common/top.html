@@ -1,0 +1,25 @@
+<div class="sui-navbar">
+    <div class="navbar-inner">
+        <a href="/" class="sui-brand">KATYUSHA 网站管理后台</a>
+        <ul class="sui-nav">
+            <%for(menu in session.first_menus!){%>
+                <%if(isEmpty(menu.secondMenus)) {%>
+                    <li class="${session.first_menu_id==menu.id? 'active':''}"><a href="${basePath}${menu.path!}?firstMenuId=${menu.id}">${menu.name!}</a></li>
+                <%} else {%>
+                    <li class="sui-dropdown"><a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">${menu.name!}<i class="caret"></i></a>
+                        <ul role="menu" class="sui-dropdown-menu">
+                            <%for(m in menu.secondMenus!){%>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="/katyusha/admin${m.path!}?firstMenuId=${menu.id}&secondMenuId=${m.id}">${m.name!}</a></li>
+                            <%}%>
+                        </ul>
+                    </li>
+                <%}%>
+            <%}%>
+        </ul>
+        <ul class="sui-nav pull-right">
+            <li><a href="#">欢迎 ${session.admin.username!}</a></li>
+            <li><a href="#">消息</a></li>
+            <li><a href="/katyusha/logout.html">退出</a></li>
+        </ul>
+    </div>
+</div>
