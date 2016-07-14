@@ -20,12 +20,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import com.jfinal.plugin.dbcp.DbcpPlugin;
 import com.jfinal.plugin.spring.SpringUtils;
 
+import cn.huwhy.katyusha.biz.LinkBiz;
 import cn.huwhy.katyusha.common.CacheUtils;
 import cn.huwhy.katyusha.controller.BaseController;
 import cn.huwhy.katyusha.dao.LinkDao;
 
 @Configuration
-@ComponentScan(basePackageClasses = {BaseController.class, LinkDao.class, CacheUtils.class})
+@ComponentScan(basePackageClasses = {BaseController.class, LinkBiz.class, LinkDao.class, CacheUtils.class})
 public class SpringConfig {
 
     @Autowired

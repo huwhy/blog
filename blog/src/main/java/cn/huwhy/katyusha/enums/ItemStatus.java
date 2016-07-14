@@ -1,8 +1,20 @@
 package cn.huwhy.katyusha.enums;
 
-public enum ItemStatus {
+import com.jfinal.plugin.mybatis.EnumValue;
+
+public enum ItemStatus implements EnumValue<String> {
     unknown,
     display,
     hide,
-    delete
+    delete;
+
+    @Override
+    public String getValue() {
+        return name();
+    }
+
+    @Override
+    public String getCnName() {
+        return "";
+    }
 }

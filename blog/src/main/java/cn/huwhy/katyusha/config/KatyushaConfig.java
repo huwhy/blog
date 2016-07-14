@@ -9,9 +9,6 @@ import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.kit.PathKit;
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.tx.ArTxProvider;
-import com.jfinal.plugin.dbcp.DbcpPlugin;
 import com.jfinal.plugin.spring.SpringPlugin;
 import com.jfinal.render.IErrorRenderFactory;
 import com.jfinal.render.Render;
@@ -43,7 +40,6 @@ public class KatyushaConfig extends JFinalConfig {
             }
         });
         me.setViewType(ViewType.OTHER);
-        me.openTx(new ArTxProvider());
         me.addStaticBasePaths("/css", "/js", "/images", "/img", "/static", "/ue", "/favicon");
         me.setUploadedFileSaveDirectory(getProperty("upload.root.path"));
         me.setFileRenderPath(getProperty("file.view.root.path"));
@@ -60,17 +56,8 @@ public class KatyushaConfig extends JFinalConfig {
 
     @Override
     public void configPlugin(Plugins me) {
-        //配置C3p0数据库连接池插件
-        DbcpPlugin dbPlugin = new DbcpPlugin(getProperty("jdbcUrl"), getProperty("user"),
-                getProperty("password").trim());
-        me.add(dbPlugin);
-
-        // 配置ActiveRecord插件
-        ActiveRecordPlugin arp = new ActiveRecordPlugin(dbPlugin);
-        me.add(arp);
-
         //Spring
-        SpringPlugin springPlugin = new SpringPlugin(SpringConfig.class);
+        SpringPlugin springPlugin = new SpringPlugin("classpath:spring.xml");
         me.add(springPlugin);
     }
 

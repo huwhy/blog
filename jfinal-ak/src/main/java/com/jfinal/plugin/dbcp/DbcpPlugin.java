@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jfinal.plugin.IPlugin;
-import com.jfinal.plugin.activerecord.IDataSourceProvider;
+import com.jfinal.plugin.spring.jdbc.IDataSourceProvider;
 
 public class DbcpPlugin implements IPlugin, IDataSourceProvider {
 

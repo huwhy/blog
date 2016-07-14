@@ -14,31 +14,17 @@
  * limitations under the License.
  */
 
-package com.jfinal.plugin.spring.jdbc.cache;
+package com.jfinal.plugin.spring.jdbc;
 
-import com.jfinal.plugin.ehcache.CacheKit;
+import javax.sql.DataSource;
 
 /**
- * EhCache.
+ * IDataSourceProvider
+ * <p>
+ * ActiveRecordPlugin constructor accept DataSourceProvider and DataSource
  */
-public class EhCache implements ICache {
-	
-	@SuppressWarnings("unchecked")
-	public <T>T get(String cacheName, Object key) {
-		return (T)CacheKit.get(cacheName, key);
-	}
-	
-	public void put(String cacheName, Object key, Object value) {
-		CacheKit.put(cacheName, key, value);
-	}
-	
-	public void remove(String cacheName, Object key) {
-		CacheKit.remove(cacheName, key);
-	}
-	
-	public void removeAll(String cacheName) {
-		CacheKit.removeAll(cacheName);
-	}
+public interface IDataSourceProvider {
+	DataSource getDataSource();
 }
 
 

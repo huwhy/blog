@@ -1,19 +1,32 @@
 package cn.huwhy.katyusha.controller.web;
 
-import cn.huwhy.katyusha.controller.BaseController;
-import cn.huwhy.katyusha.dao.*;
-import cn.huwhy.katyusha.enums.ArticleStatus;
-import cn.huwhy.katyusha.model.*;
-import cn.huwhy.katyusha.vo.Crumb;
-import com.jfinal.core.ActionKey;
-import com.jfinal.plugin.spring.jdbc.PageList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.jfinal.core.ActionKey;
+import com.jfinal.plugin.spring.jdbc.PageList;
+
+import cn.huwhy.katyusha.biz.ArticleBiz;
+import cn.huwhy.katyusha.common.Paging;
+import cn.huwhy.katyusha.controller.BaseController;
+import cn.huwhy.katyusha.dao.ArticleCatalogDao;
+import cn.huwhy.katyusha.dao.ArticleDao;
+import cn.huwhy.katyusha.dao.LinkDao;
+import cn.huwhy.katyusha.dao.ParamDao;
+import cn.huwhy.katyusha.dao.SeoDao;
+import cn.huwhy.katyusha.enums.ArticleStatus;
+import cn.huwhy.katyusha.model.Article;
+import cn.huwhy.katyusha.model.ArticleCatalog;
+import cn.huwhy.katyusha.model.Link;
+import cn.huwhy.katyusha.model.Param;
+import cn.huwhy.katyusha.model.Seo;
+import cn.huwhy.katyusha.term.ArticleTerm;
+import cn.huwhy.katyusha.vo.Crumb;
 
 @Controller("webHomeController")
 @Scope("prototype")
@@ -35,10 +48,15 @@ public class HomeController extends BaseController {
     private LinkDao linkDao;
 
     @Autowired
-    private LinkDao2 linkDao2;
+    private ArticleBiz articleBiz;
 
     public void index() {
-        PageList<Article> pageList = articleDao.findArticle(0, 0, 0, null, null, ArticleStatus.display, null, null, null, null, getPageParam());
+        ArticleTerm term = new ArticleTerm();
+        term.setStatus(ArticleStatus.display);
+        Paging<Article> paging = articleBiz.findArticle(term);
+//        PageList<Article> pageList = articleDao.findArticle(0, 0, 0, null, null, ArticleStatus.display, null, null, null, null, getPageParam());
+        PageList<Article> pageList = new PageList<>(paging.getData(),
+                paging.getTotalNum(), (int) paging.getPageSize(), (int) paging.getPageNum());
         setPageData(pageList);
         Seo seo = seoDao.getHomeSeo();
         setSeo(seo, null);
@@ -134,10 +152,10 @@ public class HomeController extends BaseController {
 
     @ActionKey("/hao123.html")
     public void hao123() {
-        List<Link> links = linkDao2.findLinksByUid(0);
+        List<Link> links = linkDao.findLinksByUid(0);
         setAttr("links", links);
         if (uid() > 0) {
-            List<Link> myLinks = linkDao2.findLinksByUid(uid());
+            List<Link> myLinks = linkDao.findLinksByUid(uid());
             setAttr("myLinks", myLinks);
         }
         view("hao123.html");

@@ -1,13 +1,13 @@
 package cn.huwhy.katyusha.tags;
 
-import com.jfinal.plugin.activerecord.dao.Page;
-import org.beetl.core.GeneralVarTagBinding;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.beetl.core.GeneralVarTagBinding;
+
+import com.jfinal.plugin.spring.jdbc.Page;
 
 public class PageTag extends GeneralVarTagBinding {
     public static final String small = "small";

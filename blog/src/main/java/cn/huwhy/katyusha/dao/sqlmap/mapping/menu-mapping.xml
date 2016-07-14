@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huwhy.katyusha.dao.mybatis.MenuDaoBatis">
+
+  <sql id="MENU_COLS">
+    id, pid, `name`, path, `level`
+  </sql>
+
+  <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="Menu">
+    insert into menu (
+      <include refid="MENU_COLS" />
+    )values(
+      #{id}, #{pid}, #{name}, #{path}, #{level}
+    )
+  </insert>
+
+  <insert id="update" parameterType="Menu">
+    update menu set `pid` = #{pid}, name=#{name}, `path`=#{path}, level=#{level}
+    where id=#{id}
+  </insert>
+
+  <select id="get" resultType="Menu" parameterType="INTEGER">
+    select
+      <include refid="MENU_COLS" />
+    from menu where id=#{id}
+  </select>
+
+  <select id="getFirst" resultType="Menu">
+    select
+      <include refid="MENU_COLS" />
+    from menu where pid=0 and level=1
+  </select>
+
+  <select id="getSecond" resultType="Menu" parameterType="Integer">
+    select
+      <include refid="MENU_COLS" />
+    from menu where pid=#{pid} and level=2
+  </select>
+
+  <delete id="delete" parameterType="java.io.Serializable">
+    delete from menu where id=#{id}
+  </delete>
+
+</mapper>

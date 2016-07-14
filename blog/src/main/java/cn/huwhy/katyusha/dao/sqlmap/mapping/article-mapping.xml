@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huwhy.katyusha.dao.mybatis.ArticleDaoBatis">
+
+  <sql id="ARTICLE_COLUMNS" >
+    id, `first_cid`, second_cid, `third_cid`, title, tags, summary, content, status,
+    img_url, author, comments, views, url, updated, created
+  </sql>
+
+  <insert id="save" parameterType="Article">
+    insert into article (
+    `first_cid`, second_cid, `third_cid`, title, tags, summary, content, status,
+    img_url, author, comments, views, url, updated, created
+    )values(
+      #{firstCid}, #{secondCid}, #{thirdCid}, #{title}, #{tags}, #{summary}, #{content}, #{status.value},
+       #{imgUrl}, #{author}, #{comments}, #{views}, #{url}, #{updated}, now()
+    )
+  </insert>
+
+  <insert id="update" parameterType="Article">
+    update article set `first_cid` = #{firstCid}, `second_cid` = #{secondCid},`third_cid` = #{thirdCid},
+    `title` = #{title},`tags` = #{tags},`summary` = #{summary},`content` = #{content},`status` = #{status.value},
+    `img_url` = #{imgUrl},`author` = #{author},`comments` = #{comments},`views` = #{views},`url` = #{url},
+    where id=#{id}
+  </insert>
+
+  <select id="get" resultType="Article" parameterType="INTEGER">
+    select <include refid="ARTICLE_COLUMNS" />
+    from article where id=#{id}
+  </select>
+
+  <select id="findPaging" resultType="Article" parameterType="com.jfinal.plugin.mybatis.Term">
+    select art.*, a.name firstName, b.name secondName, c.name thirdName from article art
+                left join article_catalog a on art.first_cid=a.id
+                left join article_catalog b on art.second_cid=b.id
+                left join article_catalog c on art.third_cid=c.id
+    <where>
+      <if test="firstCid > 0">
+        and art.first_cid=#{firstCid}
+      </if>
+      <if test="secondCid > 0">
+        and art.second_cid=#{secondCid}
+      </if>
+      <if test="thirdCid > 0">
+        and art.third_cid=#{thirdCid}
+      </if>
+      <if test="title != null">
+        and art.title like #{title}
+      </if>
+      <if test="tag != null">
+        and art.tags like #{tag}
+      </if>
+      <if test="status != null">
+        and art.status = #{status.value}
+      </if>
+      <if test="updatedStart != null">
+        and art.updated &gt;= #{updatedStart}
+      </if>
+      <if test="updatedEnd != null">
+        and art.updated &lt; #{updatedEnd}
+      </if>
+      <if test="createdStart != null">
+        and art.created &gt;= #{createdStart}
+      </if>
+      <if test="createdEnd != null">
+        and art.created &lt; #{createdEnd}
+      </if>
+    </where>
+  </select>
+
+  <delete id="delete" parameterType="java.io.Serializable">
+    delete from article where id=#{id}
+  </delete>
+
+</mapper>

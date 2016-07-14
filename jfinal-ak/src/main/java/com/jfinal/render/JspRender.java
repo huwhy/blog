@@ -16,10 +16,12 @@
 
 package com.jfinal.render;
 
-import com.jfinal.plugin.activerecord.Page;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 
 /**
  * JspRender.
@@ -72,8 +74,6 @@ public class JspRender extends Render {
             return handleList((List) value, depth);
         else if (value instanceof Map)
             return handleMap((Map) value, depth);
-        else if (value instanceof Page)
-            return handlePage((Page) value, depth);
         else if (value instanceof Object[])
             return handleArray((Object[]) value, depth);
         else
@@ -101,16 +101,6 @@ public class JspRender extends Render {
         List result = new ArrayList(list.size());
         for (Object value : list)
             result.add(handleObject(value, depth));
-        return result;
-    }
-
-    private Object handlePage(Page page, int depth) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("list", handleList(page.getList(), depth));
-        result.put("pageNumber", page.getPageNumber());
-        result.put("pageSize", page.getPageSize());
-        result.put("totalPage", page.getTotalPage());
-        result.put("totalRow", page.getTotalRow());
         return result;
     }
 

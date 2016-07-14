@@ -1,12 +1,14 @@
 package com.jfinal.plugin.spring.jdbc.dialect;
 
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.spring.jdbc.Table;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.jfinal.plugin.spring.jdbc.Table;
 
 /**
  * Dialect.
@@ -59,12 +61,6 @@ public abstract class Dialect {
     public boolean isTakeOverDbPaginate() {
         return false;
     }
-
-    public Page<Map<String, Object>> takeOverDbPaginate(Connection conn, int pageNumber, int pageSize, String select,
-            String sqlExceptSelect, Object... paras) throws SQLException {
-        throw new RuntimeException("You should implements this method in " + getClass().getName());
-    }
-
 
     public void forDbUpdate(Table info, Map<String, Object> record, StringBuilder sql, List<Object> paras) {
         sql.append("update ").append(info.getName()).append(" set ");

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huwhy.katyusha.dao.mybatis.ArticleCatalogDaoBatis">
+  <insert id="save" parameterType="ArticleCatalog">
+    insert into article_catalog (
+      id, pid, `name`, parent, `level`, updated, created
+    )values(
+      #{id}, #{pid}, #{name}, #{parent}, #{level}, #{updated}, now()
+    )
+  </insert>
+
+  <insert id="update" parameterType="ArticleCatalog">
+    update article_catalog set pid = #{pid}, `name` = #{name},`parent` = #{parent},
+      `level` = #{level},
+    where id=#{id}
+  </insert>
+
+  <select id="get" resultType="ArticleCatalog" parameterType="INTEGER">
+    select
+      id, pid, `name`, parent, `level`, updated, created
+    from article_catalog where id=#{id}
+  </select>
+
+  <select id="findPaging" resultType="ArticleCatalog" parameterType="com.jfinal.plugin.mybatis.Term">
+    select a.*, b.name parentName from article_catalog a left join article_catalog b on a.pid=b.id
+    <where>
+      <if test="pid != null and pid != ''">
+        and a.pid=#{pid}
+      </if>
+      <if test="name != null and name != ''">
+        and a.name like #{'%' + name + '%'}
+      </if>
+      <if test="isParent != null and isParent != ''">
+        and a.parent=#{isParent}
+      </if>
+      <if test="level != null">
+        and a.level =#{level}
+      </if>
+    </where>
+  </select>
+
+  <select id="getFirstLevels" resultType="ArticleCatalog">
+    select
+      id, pid, `name`, parent, `level`, updated, created
+    from article_catalog where level=#{level} limit #{size}
+  </select>
+
+  <select id="getChildren" resultType="ArticleCatalog" parameterType="Integer">
+    select
+      id, pid, `name`, parent, `level`, updated, created
+    from article_catalog where pid=#{pid}
+  </select>
+
+  <select id="getByName" resultType="ArticleCatalog" parameterType="String">
+    select
+      id, pid, `name`, parent, `level`, updated, created
+    from article_catalog where name=#{name}
+  </select>
+
+  <select id="hasChildren" resultType="Long" parameterType="Integer">
+    select count(1) from article_catalog where pid=#{pid}
+  </select>
+
+</mapper>

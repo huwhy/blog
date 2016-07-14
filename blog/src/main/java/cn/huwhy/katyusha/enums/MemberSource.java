@@ -1,17 +1,24 @@
 package cn.huwhy.katyusha.enums;
 
-public enum MemberSource {
+import com.jfinal.plugin.mybatis.EnumValue;
+
+public enum MemberSource implements EnumValue<String> {
     WeiXin("微信"),
     QQ("QQ"),
     WeiBo("微博");
 
-    private String value;
+    private String cnName;
 
-    private MemberSource(String value) {
-        this.value = value;
+    private MemberSource(String cnName) {
+        this.cnName = cnName;
     }
 
     public String getValue() {
-        return this.value;
+        return name();
+    }
+
+    @Override
+    public String getCnName() {
+        return cnName;
     }
 }

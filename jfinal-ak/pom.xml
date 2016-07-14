@@ -27,15 +27,20 @@
             <artifactId>spring-jdbc</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>jetty-server</artifactId>
             <version>8.1.8</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -51,12 +56,6 @@
             <scope>provided</scope>
         </dependency>
         <!-- cos -->
-        <dependency>
-            <groupId>c3p0</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.9.1.2</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>

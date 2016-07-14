@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huwhy.katyusha.dao.mybatis.LinkDaoBatis">
+  <resultMap id="LINK" type="Link" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="type" property="type" typeHandler="com.jfinal.plugin.mybatis.EnumValueTypeHandler" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="LINK-COLUMNS" >
+    id, `name`, url, `type`, created, creator
+  </sql>
+
+  <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="Link">
+    insert into link (
+    `name`, url, `type`, created, creator
+    )values(
+      #{name}, #{url}, #{type}, now(), #{creator}
+    )
+  </insert>
+
+  <insert id="update" parameterType="Link">
+    update link set `name` = #{name}, url=#{url}, `type`=#{type.value}
+    where id=#{id}
+  </insert>
+
+  <select id="get" resultMap="LINK" parameterType="INTEGER">
+    select <include refid="LINK-COLUMNS" />
+    from link where id=#{id}
+  </select>
+  <select id="getLink" resultType="Link" parameterType="INTEGER">
+    select <include refid="LINK-COLUMNS" />
+    from link where id=#{id}
+  </select>
+
+  <select id="count" resultType="Long">
+    select count(1) from link;
+  </select>
+
+  <select id="findLinksByUserId" resultType="Link">
+    select <include refid="LINK-COLUMNS" /> from link  where creator=#{userId} and `type`=#{type.value};
+  </select>
+
+  <delete id="delete" parameterType="java.io.Serializable">
+    delete from link where id=#{id}
+  </delete>
+
+
+</mapper>

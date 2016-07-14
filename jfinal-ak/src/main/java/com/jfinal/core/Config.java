@@ -77,13 +77,6 @@ class Config {
 		
 		for (IPlugin plugin : pluginList) {
 			try {
-				// process ActiveRecordPlugin devMode
-				if (plugin instanceof com.jfinal.plugin.activerecord.ActiveRecordPlugin) {
-					com.jfinal.plugin.activerecord.ActiveRecordPlugin arp = (com.jfinal.plugin.activerecord.ActiveRecordPlugin)plugin;
-					if (arp.getDevMode() == null)
-						arp.setDevMode(constants.getDevMode());
-				}
-				
 				if (plugin.start() == false) {
 					String message = "Plugin start error: " + plugin.getClass().getName();
 					log.error(message);

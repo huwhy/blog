@@ -1,13 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
+<beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+                           http://www.springframework.org/schema/context/spring-context-4.2.xsd
+                            http://www.springframework.org/schema/tx
+                             http://www.springframework.org/schema/tx/spring-tx.xsd">
   <context:annotation-config />
   <context:component-scan base-package="cn.huwhy.katyusha" />
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreResourceNotFound" value="true" />
+    <property name="fileEncoding" value="utf-8" />
+    <property name="locations">
+      <list>
+        <value>classpath:jdbc.properties</value>
+        <value>classpath:config.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName">
+      <value>${db.driver}</value>
+    </property>
+    <property name="url">
+      <value>${db.url}</value>
+    </property>
+    <property name="username">
+      <value>${db.username}</value>
+    </property>
+    <property name="password">
+      <value>${db.password}</value>
+    </property>
+    <property name="defaultAutoCommit">
+      <value>${db.defaultAutoCommit}</value>
+    </property>
+    <!-- 同时连接最大数 -->
+    <property name="maxActive">
+      <value>${db.maxActive}</value>
+    </property>
+    <!-- 连接池空闲时保持的最大连接数 -->
+    <property name="maxIdle">
+      <value>${db.maxIdle}</value>
+    </property>
+    <!-- 当没有可用连接是等待最长时间 毫秒 -->
+    <property name="maxWait">
+      <value>${db.maxWait}</value>
+    </property>
+  </bean>
+
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="typeAliasesPackage" value="cn.huwhy.katyusha.model" />
+    <property name="configLocation" value="classpath:cn/huwhy/katyusha/dao/sqlmap/sqlmap.xml" />
+    <property name="mapperLocations" value="classpath:cn/huwhy/katyusha/dao/sqlmap/mapping/*-mapping.xml" />
+  </bean>
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="cn.huwhy.katyusha.dao.mybatis" />
+    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+  </bean>
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" >
+    <constructor-arg ref="dataSource" />
+  </bean>
+  <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
 </beans>
