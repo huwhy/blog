@@ -1,19 +1,26 @@
 package cn.huwhy.katyusha.config;
 
-import cn.huwhy.katyusha.component.ueditor.UeController;
-import cn.huwhy.katyusha.controller.FileController;
-import cn.huwhy.katyusha.interceptor.admin.AdminLoginInterceptor;
-import cn.huwhy.katyusha.interceptor.admin.CommonInterceptor;
-import com.jfinal.config.*;
+import org.beetl.ext.jfinal.BeetlRenderFactory;
+
+import com.jfinal.config.Constants;
+import com.jfinal.config.Handlers;
+import com.jfinal.config.Interceptors;
+import com.jfinal.config.JFinalConfig;
+import com.jfinal.config.Plugins;
+import com.jfinal.config.Routes;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.tx.ArTxProvider;
-import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.dbcp.DbcpPlugin;
 import com.jfinal.plugin.spring.SpringPlugin;
 import com.jfinal.render.IErrorRenderFactory;
 import com.jfinal.render.Render;
 import com.jfinal.render.ViewType;
-import org.beetl.ext.jfinal.BeetlRenderFactory;
+
+import cn.huwhy.katyusha.component.ueditor.UeController;
+import cn.huwhy.katyusha.controller.FileController;
+import cn.huwhy.katyusha.interceptor.admin.AdminLoginInterceptor;
+import cn.huwhy.katyusha.interceptor.admin.CommonInterceptor;
 
 public class KatyushaConfig extends JFinalConfig {
     @Override
@@ -53,18 +60,18 @@ public class KatyushaConfig extends JFinalConfig {
 
     @Override
     public void configPlugin(Plugins me) {
-//        //配置C3p0数据库连接池插件
-//        C3p0Plugin c3p0Plugin = new C3p0Plugin(getProperty("jdbcUrl"), getProperty("user"),
-//                getProperty("password").trim());
-//        me.add(c3p0Plugin);
-//
-//        // 配置ActiveRecord插件
-//        ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
-//        me.add(arp);
+        //配置C3p0数据库连接池插件
+        DbcpPlugin dbPlugin = new DbcpPlugin(getProperty("jdbcUrl"), getProperty("user"),
+                getProperty("password").trim());
+        me.add(dbPlugin);
 
-//        //Spring
-//        SpringPlugin springPlugin = new SpringPlugin(SpringConfig.class);
-//        me.add(springPlugin);
+        // 配置ActiveRecord插件
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(dbPlugin);
+        me.add(arp);
+
+        //Spring
+        SpringPlugin springPlugin = new SpringPlugin(SpringConfig.class);
+        me.add(springPlugin);
     }
 
     @Override

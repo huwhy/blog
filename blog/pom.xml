@@ -67,8 +67,9 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>c3p0</groupId>
-            <artifactId>c3p0</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -102,30 +103,6 @@
                 <configuration>
                     <excludes>**/cn/**</excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>blog-jar</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classesDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes</classesDirectory>
-                            <outputDirectory>${project.basedir}/target/${project.artifactId}/WEB-INF/lib
-                            </outputDirectory>
-                            <jarName>blog-${project.version}</jarName>
-                            <includes>
-                                <include>
-                                    **/cn/**
-                                </include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
