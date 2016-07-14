@@ -1,19 +1,20 @@
 package com.jfinal.plugin.spring;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.jfinal.plugin.IPlugin;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class SpringPlugin implements IPlugin {
 
-    private Class<?> configClass;
+    private String[] configLocations;
 
-    public SpringPlugin(Class<?> configClass) {
-        this.configClass = configClass;
+    public SpringPlugin(String... configLocations) {
+        this.configLocations = configLocations;
     }
 
     @Override
     public boolean start() {
-        SpringUtils.setContext(new AnnotationConfigApplicationContext(configClass));
+        SpringUtils.setContext(new ClassPathXmlApplicationContext(configLocations));
         return true;
     }
 
