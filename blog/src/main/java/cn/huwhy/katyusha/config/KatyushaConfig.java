@@ -24,7 +24,15 @@ public class KatyushaConfig extends JFinalConfig {
     public void configConstant(Constants me) {
         loadPropertyFile("config.properties");
         String templateRoot = PathKit.getWebRootPath() + "/WEB-INF/template";
-        final BeetlRenderFactory mainRenderFactory = new BeetlRenderFactory(templateRoot);
+        final BeetlRenderFactory mainRenderFactory = new BeetlRenderFactory(templateRoot) {
+            @Override
+            public Render getRender(String view) {
+                if (!view.endsWith(".html")) {
+                    return super.getRender(view + ".html");
+                }
+                return super.getRender(view);
+            }
+        };
         BeetlExt.extConfig();
         me.setMainRenderFactory(mainRenderFactory);
         me.setErrorRenderFactory(new IErrorRenderFactory() {

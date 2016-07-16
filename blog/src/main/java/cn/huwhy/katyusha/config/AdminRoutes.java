@@ -1,9 +1,19 @@
 package cn.huwhy.katyusha.config;
 
 
-import cn.huwhy.katyusha.controller.admin.*;
 import com.jfinal.config.Routes;
 import com.jfinal.core.Controller;
+
+import cn.huwhy.katyusha.controller.admin.ArticleCatalogController;
+import cn.huwhy.katyusha.controller.admin.ArticleController;
+import cn.huwhy.katyusha.controller.admin.CacheController;
+import cn.huwhy.katyusha.controller.admin.HomeController;
+import cn.huwhy.katyusha.controller.admin.LoginController;
+import cn.huwhy.katyusha.controller.admin.ParamController;
+import cn.huwhy.katyusha.controller.admin.SeoController;
+import cn.huwhy.katyusha.controller.admin.SettingController;
+import cn.huwhy.katyusha.controller.admin.SlideController;
+import cn.huwhy.katyusha.controller.admin.UserController;
 
 public class AdminRoutes extends Routes {
     @Override
@@ -21,6 +31,6 @@ public class AdminRoutes extends Routes {
     }
 
     private void addRoute(Class<? extends Controller> clazz) {
-        add(clazz, "");
+        add(clazz, "admin");
     }
 }

@@ -16,14 +16,14 @@
 
 package com.jfinal.config;
 
-import com.jfinal.core.AK;
-import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.jfinal.core.AK;
+import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 
 /**
  * Routes.
@@ -53,8 +53,8 @@ public abstract class Routes {
         if (ak != null) {
             controllerName = ak.value();
         }
-        if (StrKit.notBlank(controllerName)) {
-            controllerName = StrKit.firstCharToLowerCase(clazz.getName().replace("Controller", ""));
+        if (StrKit.isBlank(controllerName)) {
+            controllerName = StrKit.firstCharToLowerCase(clazz.getSimpleName().replace("Controller", ""));
         }
         add(controllerName, clazz, viewBase);
     }
